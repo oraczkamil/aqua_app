@@ -15,7 +15,7 @@ function Navigation() {
 
     return (
         <NavigationContainer>
-            <BottomTab.Navigator initialRouteName="clients">
+            <BottomTab.Navigator initialRouteName="schedule">
                 <BottomTab.Screen name="schedule" component={screens.Schedule} options={config.schedule}/>
                 <BottomTab.Screen name="day" component={screens.Day} options={config.day} />
                 <BottomTab.Screen name="meeting" component={screens.Meeting} options={config.meeting} />

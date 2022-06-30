@@ -15,6 +15,10 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch }) => next => async (action) =>
             console.log(error);
         }
     }
+}
+
+const loadOneDayFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
+    next(action);
 
     if (action.type === LOAD_ONE_DAY) {
         try {
@@ -26,6 +30,10 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch }) => next => async (action) =>
             console.log(error);
         }
     }
+}
+
+const addMeetingFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
+    next(action);
 
     if (action.type === ADD_MEETING) {
         try {
@@ -36,6 +44,10 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch }) => next => async (action) =>
             console.log(error);
         }
     }
+}
+
+const editMeetingFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
+    next(action);
 
     if (action.type === EDIT_MEETING) {
         try {
@@ -46,6 +58,10 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch }) => next => async (action) =>
             console.log(error);
         }
     }
+}
+
+const deleteMeetingFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
+    next(action);
 
     if (action.type === DELETE_MEETING) {
         try {
@@ -59,5 +75,9 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch }) => next => async (action) =>
 }
 
 export default [
-    loadAllDaysFlow
+    loadAllDaysFlow,
+    loadOneDayFlow,
+    addMeetingFlow,
+    editMeetingFlow,
+    deleteMeetingFlow
 ]

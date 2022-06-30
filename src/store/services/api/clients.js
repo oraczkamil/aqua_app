@@ -1,37 +1,47 @@
 import axios from 'axios';
-const url = 'http://127.0.0.1:8000/api';
+import config from '../../../../config';
 
-let clients = [
-    {
-        id: 1,
-        name: 'Kacper',
-    },
-    {
-        id: 2,
-        name: 'Daniel',
-    },
-    {
-        id: 3,
-        name: 'Mucha',
-    },
-];
+const { url } = config;
 
 export default {
     getAllClients: async () => {
-        return clients;
+        const response = await axios.get(`${url}/clients`);
 
+        return response.data;
     },
     addClient: async (client) => {
-        clients.push(client);
+        const response = await axios.post(`${url}/clients`, {
+            name: client.name,
+            surname: client.surname,
+            city: client.city,
+            address: client.address,
+            zip_code: client.zip_code,
+            phone: client.phone,
+        })
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     },
     editClient: async (client) => {
-        clients.map((item, index) => {
-            if(item.id === client.id) clients[index] = client;
-        });
+        const response = await axios.patch(`${url}/clients/${client.id}`, {
+            name: client.name,
+            surname: client.surname,
+            city: client.city,
+            address: client.address,
+            zip_code: client.zip_code,
+            phone: client.phone,
+        })
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     },
     deleteClient: async (id) => {
-        clients.map((item, index) => {
-            if(item.id === id) clients.splice(index);
-        });
+        const response = await axios.delete(`${url}/clients/${id}`)
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     }
 }

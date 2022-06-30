@@ -8,7 +8,7 @@ function Client({route, navigation}) {
     useFocusEffect(
         useCallback(() => {
             navigation.setOptions({
-                title: client.name,
+                title: `${client.name}  ${client.surname}`,
             });
         }, [client])
     );
@@ -16,7 +16,10 @@ function Client({route, navigation}) {
     return (
         <Container>
             <ScrollContainer>
-                <Row label={'Imię'} value={client.name}/>
+                <Row label={'Miasto'} value={client.city}/>
+                <Row label={'Adres'} value={client.address}/>
+                <Row label={'Kod pocztowy'} value={client.zip_code}/>
+                <Row label={'Numer'} value={client.phone}/>
             </ScrollContainer>
 
             <Button title={'Edytuj'} onPress={() => navigation.navigate('editClient', {
