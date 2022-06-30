@@ -1,0 +1,1 @@
+export const getAllClients = (state) => state.clients.clients;
