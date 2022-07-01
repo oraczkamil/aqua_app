@@ -2,7 +2,10 @@ import * as constants from "../constants/security";
 
 const initialState = {
     token: 'token',
-    user: {},
+    user: {
+        id: 1,
+        name: 'Kamil'
+    },
 };
 
 const securityReducer = (state = initialState, action) => {

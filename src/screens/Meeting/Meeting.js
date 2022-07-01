@@ -13,11 +13,11 @@ function Meeting({route, navigation}) {
     return (
         <Container>
             <ScrollContainer>
-                <Row label={'Imię klienta'} value={meeting.firstname}/>
-                <Row label={'Nazwisko klienta'} value={meeting.lastname}/>
-                <Row label={'Status'} value={meeting.status}/>
+                <Row label={'Imię klienta'} value={meeting.client.name}/>
+                <Row label={'Nazwisko klienta'} value={meeting.client.surname}/>
+                <Row label={'Status'} value={meeting.status.status}/>
                 <Row label={'Komentarz'} value={meeting.comment}/>
-                <Row label={'Komentarz po spotakniu'} value={meeting.commentAfter}/>
+                <Row label={'Komentarz po spotakniu'} value={meeting.comment_after}/>
                 <Row label={'Cena'} value={meeting.price}/>
             </ScrollContainer>
 

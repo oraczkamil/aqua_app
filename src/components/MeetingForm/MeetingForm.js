@@ -1,17 +1,22 @@
 import React, {useCallback, useState, useReducer, useEffect} from 'react';
 import {Button, Input, ScrollContainer} from "../index";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {ADD_MEETING, DELETE_MEETING, EDIT_MEETING} from "../../store/constants/schedule";
 import reducer, {initialState} from "./reducer";
+import {getAllClients} from "../../store/selectors/clients";
+import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
+import {Text, View} from "react-native";
 
 function MeetingForm({mode = 'add', meeting}) {
+    const clients = useSelector(getAllClients);
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [state, dispatchMeeting] = useReducer(reducer, initialState);
     const [date, setDate] = React.useState(undefined);
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+    const [dataClients, setDataClients] = useState([]);
 
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -42,10 +47,6 @@ function MeetingForm({mode = 'add', meeting}) {
     const validate = () => {
         let errors = [];
 
-        if(!state.firstname.value) { dispatchMeeting({type: 'setFirstname', payload: {error: 'Imię jest wymagane'}}); errors.push('firstname') }
-        else errors.filter(error => error !== 'firstname');
-        if(!state.lastname.value) { dispatchMeeting({type: 'setLastname', payload: {error: 'Nazwisko jest wymagane'}}); errors.push('lastname') }
-        else errors.filter(error => error !== 'lastname');
         if(!state.date.value) { dispatchMeeting({type: 'setDate', payload: {error: 'Data jest wymagana'}}); errors.push('date') }
         else errors.filter(error => error !== 'date');
         if(!state.hour.value) { dispatchMeeting({type: 'setHour', payload: {error: 'Godzina jest wymagana'}}); errors.push('hour') }
@@ -62,8 +63,7 @@ function MeetingForm({mode = 'add', meeting}) {
         if(validate()){
             const data = {
                 id: state.id.value,
-                firstname: state.firstname.value,
-                lastname: state.lastname.value,
+                clientId: state.clientId.value,
                 date: state.date.value,
                 hour: state.hour.value,
                 status: state.status.value,
@@ -81,7 +81,7 @@ function MeetingForm({mode = 'add', meeting}) {
     }
 
     const handleDelete = () => {
-        dispatch({type: DELETE_MEETING, payload: state.id.value});
+        dispatch({type: DELETE_MEETING, payload: {id: state.id.value, date: state.date.value}});
         navigation.navigate('day', {date: state.date.value, title: state.date.value});
     }
 
@@ -93,13 +93,12 @@ function MeetingForm({mode = 'add', meeting}) {
                 })
 
                 dispatchMeeting({type: 'setId', payload: {value: meeting.id}});
-                dispatchMeeting({type: 'setFirstname', payload: {value: meeting.firstname}});
-                dispatchMeeting({type: 'setLastname', payload: {value: meeting.lastname}});
+                dispatchMeeting({type: 'setClientId', payload: {value: meeting.client_id}});
                 dispatchMeeting({type: 'setDate', payload: {value: meeting.date}});
                 dispatchMeeting({type: 'setHour', payload: {value: meeting.hour}});
-                dispatchMeeting({type: 'setStatus', payload: {value: meeting.status}});
+                dispatchMeeting({type: 'setStatus', payload: {value: meeting.status.status}});
                 dispatchMeeting({type: 'setComment', payload: {value: meeting.comment}});
-                dispatchMeeting({type: 'setCommentAfter', payload: {value: meeting.commentAfter}});
+                dispatchMeeting({type: 'setCommentAfter', payload: {value: meeting.comment_after}});
                 dispatchMeeting({type: 'setPrice', payload: {value: meeting.price}});
             };
         }, [meeting])
@@ -109,23 +108,53 @@ function MeetingForm({mode = 'add', meeting}) {
         if(date) dispatchMeeting({type: 'setDate', payload: {value: date}});
     }, [date])
 
+    useEffect(() => {
+        if(clients.length){
+            let dataTemp = [];
+
+            clients.map(client => {
+                dataTemp.push({
+                    id: `${client.id}`,
+                    title: `${client.name} ${client.surname}`,
+                });
+            })
+
+            setDataClients(dataTemp);
+        }
+    }, [clients])
+
     return (
         <>
             <ScrollContainer>
-                <Input
-                    errorMessage={state.firstname.error}
-                    label="Imię"
-                    value={state.firstname.value}
-                    onChangeText={text => dispatchMeeting({type: 'setFirstname', payload: {value: text}})}
+                <AutocompleteDropdown
+                    clearOnFocus={false}
+                    closeOnBlur={true}
+                    closeOnSubmit={false}
+                    initialValue={{ 'id': '1' }}
+                    // dataSet={dataClients}
+                    dataSet={[
+                        {
+                            id: "1",
+                            title: "Mr. Clyde Wunsch PhD Torpasdasd",
+                        },
+                        {
+                            id: "2",
+                            title: "Miles Goldner Hillasdasd",
+                        },
+                        {
+                            id: "3",
+                            title: "Carroll Beier MD Runte",
+                        },
+                        {
+                            id: "4",
+                            title: "fabab adbab",
+                        },
+                        {
+                            id: "5",
+                            title: "aDDFAG AGFGN",
+                        },
+                    ]}
                 />
-
-                <Input
-                    errorMessage={state.lastname.error}
-                    label="Nazwisko"
-                    value={state.lastname.value}
-                    onChangeText={text => dispatchMeeting({type: 'setLastname', payload: {value: text}})}
-                />
-
                 <Input
                     errorMessage={state.date.error}
                     type={'datetime'}

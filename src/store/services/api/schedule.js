@@ -1,68 +1,60 @@
 import axios from 'axios';
+import config from '../../../../config';
 
-let meetings = [
-    {
-        id: '1',
-        firstname: 'firstname',
-        lastname: 'lastname',
-        date: '2022-06-22',
-        hour: '15:00',
-        status: 'status',
-        comment: 'comment',
-        commentAfter: 'commentAfter',
-        price: 200
-    },
-    {
-        id: '2',
-        firstname: 'firstname',
-        lastname: 'lastname',
-        date: '2022-06-22',
-        hour: '15:00',
-        status: 'status',
-        comment: 'comment',
-        commentAfter: 'commentAfter',
-        price: 200
-    },
-    {
-        id: '3',
-        firstname: 'firstname',
-        lastname: 'lastname',
-        date: '2022-06-22',
-        hour: '15:00',
-        status: 'status',
-        comment: 'comment',
-        commentAfter: 'commentAfter',
-        price: 200
-    }
-]
+const { url } = config;
 
 export default {
-    getAllDays: async () => {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/todos');
+    getAllDays: async (userId) => {
+        const response = await axios.get(`${url}/users/${userId}/meetingsdates`)
+            .then(response => (response))
+            .catch(error => console.log(error));
 
-        return {
-            '2022-06-16': {marked: true},
-            '2022-06-17': {marked: true},
-            '2022-06-18': {marked: true},
-            '2022-06-19': {marked: true},
-            '2022-06-22': {marked: true},
-            '2022-06-27': {marked: true},
-        }
+        return response.data;
     },
-    getOneDay: async () => {
-        return meetings;
+    getOneDay: async (date, userId) => {
+        const response = await axios.get(`${url}/users/${userId}/meetings/${date}`)
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     },
-    addMeeting: async (meeting) => {
-        meetings.push(meeting);
-    },
-    editMeeting: async (meeting) => {
-        meetings.map((item, index) => {
-            if(item.id === meeting.id) meetings[index] = meeting;
+    addMeeting: async (meeting, userId) => {
+        const response = await axios.post(`${url}/meetings`, {
+            user_id: userId,
+            client_id: meeting.clientId,
+            date: meeting.date,
+            hour: meeting.hour,
+            status_id: 1,
+            comment: meeting.comment,
+            comment_after: meeting.commentAfter,
+            price: meeting.price
         })
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     },
-    deleteMeeting: async (id) => {
-        meetings.map((item, index) => {
-            if(item.id === id) meetings.splice(index);
+    editMeeting: async (meeting, userId) => {
+        const response = await axios.patch(`${url}/meetings/${meeting.id}`, {
+            user_id: userId,
+            client_id: meeting.clientId,
+            date: meeting.date,
+            hour: meeting.hour,
+            status_id: 1,
+            comment: meeting.comment,
+            comment_after: meeting.commentAfter,
+            price: meeting.price
         })
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
+    },
+    deleteMeeting: async ({userId, id, date}) => {
+        const response = await axios.delete(`${url}/users/${userId}/date/${date}/meeting/${id}`)
+            .then(response => (response))
+            .catch(error => console.log(error));
+
+        return response.data;
     }
 }
