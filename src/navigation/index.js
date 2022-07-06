@@ -5,6 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import config from "./config";
 import {useSelector} from "react-redux";
 import {getToken} from "../store/selectors/security";
+import {REACT_APP_API_TOKEN} from '@env';
 
 const BottomTab = createBottomTabNavigator();
 

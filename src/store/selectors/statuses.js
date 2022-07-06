@@ -1,0 +1,1 @@
+export const getAllStatuses = (state) => state.statuses.allStatuses;

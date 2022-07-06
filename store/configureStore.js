@@ -5,6 +5,7 @@ import middlewares from "../src/store/middlewares";
 import services from "../src/store/services";
 import scheduleReducer from "../src/store/reducers/schedule";
 import clientsReducer from "../src/store/reducers/clients";
+import statusesReducer from "../src/store/reducers/statuses";
 
 const rootReducer = combineReducers(
     {
@@ -12,6 +13,7 @@ const rootReducer = combineReducers(
         security: securityReducer,
         schedule: scheduleReducer,
         clients: clientsReducer,
+        statuses: statusesReducer,
     }
 );
 

@@ -1,12 +1,18 @@
 export const initialState = {
-    id: {value: '', error: ''},
-    clientId: {value: null, error: ''},
-    date: {value: '2022-06-30', error: ''},
-    hour: {value: '15:00:00', error: ''},
-    status: {value: 'test', error: ''},
-    comment: {value: 'test', error: ''},
-    commentAfter: {value: 'test', error: ''},
-    price: {value: 200, error: ''},
+    id: '',
+    clientId: null,
+    date: '2022-06-30',
+    hour: '15:00:00',
+    status: null,
+    comment: 'test',
+    commentAfter: 'test',
+    price: 200,
+    isDatePickerVisible: false,
+    isTimePickerVisible: false,
+    dataClients: [],
+    client: null,
+    errors: [],
+    dataStatuses: [],
 };
 
 export default function reducer(state, action) {
@@ -19,6 +25,12 @@ export default function reducer(state, action) {
         case 'setComment': return {...state, comment: action.payload};
         case 'setCommentAfter': return {...state, commentAfter: action.payload};
         case 'setPrice': return {...state, price: action.payload};
+        case 'setDatePickerVisibility': return {...state, isDatePickerVisible: action.payload};
+        case 'setTimePickerVisibility': return {...state, isTimePickerVisible: !state.isTimePickerVisible};
+        case 'setDataClients': return {...state, dataClients: action.payload};
+        case 'setClient': return {...state, client: action.payload};
+        case 'setErrors': return {...state, errors: action.payload};
+        case 'setDataStatuses': return {...state, dataStatuses: action.payload};
         default:
             throw new Error(action.type);
     }

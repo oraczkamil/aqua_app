@@ -50,13 +50,13 @@ const addMeetingFlow = ({api}) => ({ dispatch, getState }) => next => async (act
 
             const userId = getState().security.user.id;
 
+            let day = await api.schedule.getOneDay(action.payload.date, userId);
+
             const newMeeting = await api.schedule.addMeeting(action.payload, userId);
 
-            const meetings = getState().schedule.day.map(meeting => ({...meeting}));
+            day.push(newMeeting);
 
-            meetings.push(newMeeting);
-
-            dispatch(setOneDay(meetings));
+            dispatch(setOneDay(day));
 
             dispatch(uiActions.disableLoading());
         } catch (error) {

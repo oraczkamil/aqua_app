@@ -1,0 +1,2 @@
+export const LOAD_ALL_STATUSES = 'LOAD_ALL_STATUSES';
+export const SET_ALL_STATUSES = 'SET_ALL_STATUSES';

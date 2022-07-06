@@ -1,18 +1,17 @@
 import React from 'react';
 import {TextInput} from "react-native-paper";
 import {input} from "../../utils/theme/colors";
-import {Pressable} from "react-native";
+import {Pressable, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Error from "../Error";
+import DropDownPicker from 'react-native-dropdown-picker';
 
 function Input(props) {
     switch (props.type){
-        case 'text':
-            return getTextInput(props);
-        case 'datetime':
-            return getDateTimeInput(props);
-        default:
-            return getTextInput(props);
+        case 'text': return getTextInput(props);
+        case 'datetime': return getDateTimeInput(props);
+        case 'dropdown': return getDropdownPicker(props);
+        default: return getTextInput(props);
     }
 }
 
@@ -49,6 +48,23 @@ const getDateTimeInput = (props) => {
                 onConfirm={props.onConfirm}
                 onCancel={props.onCancel}
             />
+        </>
+    );
+}
+
+const getDropdownPicker = (props) => {
+    return (
+        <>
+            <Error message={props.errorMessage} />
+            <View>
+                <DropDownPicker
+                    {...props}
+                    searchable={true}
+                    style={{
+                        fontSize: 16
+                    }}
+                />
+            </View>
         </>
     );
 }

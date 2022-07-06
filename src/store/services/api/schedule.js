@@ -24,7 +24,7 @@ export default {
             client_id: meeting.clientId,
             date: meeting.date,
             hour: meeting.hour,
-            status_id: 1,
+            status_id: meeting.status,
             comment: meeting.comment,
             comment_after: meeting.commentAfter,
             price: meeting.price
@@ -40,7 +40,7 @@ export default {
             client_id: meeting.clientId,
             date: meeting.date,
             hour: meeting.hour,
-            status_id: 1,
+            status_id: meeting.status,
             comment: meeting.comment,
             comment_after: meeting.commentAfter,
             price: meeting.price

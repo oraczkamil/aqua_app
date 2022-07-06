@@ -5,79 +5,76 @@ import {useDispatch, useSelector} from "react-redux";
 import {ADD_MEETING, DELETE_MEETING, EDIT_MEETING} from "../../store/constants/schedule";
 import reducer, {initialState} from "./reducer";
 import {getAllClients} from "../../store/selectors/clients";
-import { AutocompleteDropdown } from 'react-native-autocomplete-dropdown';
-import {Text, View} from "react-native";
+import {getAllStatuses} from "../../store/selectors/statuses";
+import useValidation from '../../utils/hooks/useValidation';
+import validationConfig from './validationConfig';
+import {mapDataToSelect} from '../../utils/helpers';
 
 function MeetingForm({mode = 'add', meeting}) {
-    const clients = useSelector(getAllClients);
     const navigation = useNavigation();
     const dispatch = useDispatch();
+    const validation = useValidation();
+
+    const clients = useSelector(getAllClients);
+    const statuses = useSelector(getAllStatuses);
+    const [open, setOpen] = useState(false);
+    const [openStatus, setOpenStatus] = useState(false);
+    const [client, setClient] = useState(null);
+    const [status, setStatus] = useState(null);
+
     const [state, dispatchMeeting] = useReducer(reducer, initialState);
-    const [date, setDate] = React.useState(undefined);
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-    const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-    const [dataClients, setDataClients] = useState([]);
+
+    const {rules, messages} = validationConfig;
 
     const showDatePicker = () => {
-        setDatePickerVisibility(true);
+        dispatchMeeting({type: 'setDatePickerVisibility'});
     };
 
     const hideDatePicker = () => {
-        setDatePickerVisibility(false);
+        dispatchMeeting({type: 'setDatePickerVisibility'});
     };
 
     const showTimePicker = () => {
-        setTimePickerVisibility(true);
+        dispatchMeeting({type: 'setTimePickerVisibility'});
     };
 
     const hideTimePicker = () => {
-        setTimePickerVisibility(false);
+        dispatchMeeting({type: 'setTimePickerVisibility'});
     };
 
     const handleConfirm = (date) => {
-        dispatchMeeting({type: 'setDate', payload: {value: date.toISOString().slice(0,10)}});
+        dispatchMeeting({type: 'setDate', payload: date.toISOString().slice(0,10)});
         hideDatePicker();
     };
 
     const handleTimeConfirm = (time) => {
-        dispatchMeeting({type: 'setHour', payload: {value: time.toISOString().slice(11,19)}});
+        dispatchMeeting({type: 'setHour', payload: time.toISOString().slice(11,19)});
         hideTimePicker();
     };
 
-    const validate = () => {
-        let errors = [];
-
-        if(!state.date.value) { dispatchMeeting({type: 'setDate', payload: {error: 'Data jest wymagana'}}); errors.push('date') }
-        else errors.filter(error => error !== 'date');
-        if(!state.hour.value) { dispatchMeeting({type: 'setHour', payload: {error: 'Godzina jest wymagana'}}); errors.push('hour') }
-        else errors.filter(error => error !== 'hour');
-        if(!state.status.value) { dispatchMeeting({type: 'setStatus', payload: {error: 'Status jest wymagany'}}); errors.push('status') }
-        else errors.filter(error => error !== 'status');
-        if(!state.price.value) { dispatchMeeting({type: 'setPrice', payload: {error: 'Cena jest wymagana'}}); errors.push('price') }
-        else errors.filter(error => error !== 'price');
-
-        return !errors.length;
-    }
-
     const handleSave = () => {
-        if(validate()){
-            const data = {
-                id: state.id.value,
-                clientId: state.clientId.value,
-                date: state.date.value,
-                hour: state.hour.value,
-                status: state.status.value,
-                comment: state.comment.value,
-                commentAfter: state.commentAfter.value,
-                price: state.price.value,
-            }
+        const data = {
+            clientId: state.clientId.value,
+            date: state.date,
+            hour: state.hour,
+            status: state.status.value,
+            price: state.price,
+            comment: state.comment,
+            commentAfter: state.commentAfter
+        }
 
+        validation.validate(rules, messages, data);
+
+        if(validation.validate(rules, messages, data)){
             mode === 'edit'
                 ? dispatch({type: EDIT_MEETING, payload: data})
                 : dispatch({type: ADD_MEETING, payload: data})
 
             navigation.navigate('day', {date: state.date.value, title: state.date.value});
+        }else{
+            dispatchMeeting({type: 'setErrors', payload: validation.errors});
         }
+
     }
 
     const handleDelete = () => {
@@ -92,121 +89,111 @@ function MeetingForm({mode = 'add', meeting}) {
                     title: `${meeting.date} ${meeting.hour}`
                 })
 
-                dispatchMeeting({type: 'setId', payload: {value: meeting.id}});
-                dispatchMeeting({type: 'setClientId', payload: {value: meeting.client_id}});
-                dispatchMeeting({type: 'setDate', payload: {value: meeting.date}});
-                dispatchMeeting({type: 'setHour', payload: {value: meeting.hour}});
-                dispatchMeeting({type: 'setStatus', payload: {value: meeting.status.status}});
-                dispatchMeeting({type: 'setComment', payload: {value: meeting.comment}});
-                dispatchMeeting({type: 'setCommentAfter', payload: {value: meeting.comment_after}});
-                dispatchMeeting({type: 'setPrice', payload: {value: meeting.price}});
+                dispatchMeeting({type: 'setId', payload: meeting.id});
+                dispatchMeeting({type: 'setClientId', payload: meeting.client_id});
+                dispatchMeeting({type: 'setDate', payload: meeting.date});
+                dispatchMeeting({type: 'setHour', payload: meeting.hour});
+                dispatchMeeting({type: 'setStatus', payload: meeting.status.status});
+                dispatchMeeting({type: 'setComment', payload: meeting.comment});
+                dispatchMeeting({type: 'setCommentAfter', payload: meeting.comment_after});
+                dispatchMeeting({type: 'setPrice', payload: meeting.price});
             };
         }, [meeting])
     );
 
     useEffect(() => {
-        if(date) dispatchMeeting({type: 'setDate', payload: {value: date}});
-    }, [date])
+        if(clients.length) dispatchMeeting({type: 'setDataClients', payload: mapDataToSelect(clients, ['name', 'surname'])});
+    }, [clients])
 
     useEffect(() => {
-        if(clients.length){
-            let dataTemp = [];
+        if(statuses.length) dispatchMeeting({type: 'setDataStatuses', payload: mapDataToSelect(statuses, ['status'])});
+    }, [statuses])
 
-            clients.map(client => {
-                dataTemp.push({
-                    id: `${client.id}`,
-                    title: `${client.name} ${client.surname}`,
-                });
-            })
+    useEffect(() => {
+        dispatchMeeting({type: 'setClientId', payload: {value: client}})
+    }, [client])
 
-            setDataClients(dataTemp);
-        }
-    }, [clients])
+    useEffect(() => {
+        dispatchMeeting({type: 'setStatus', payload: {value: status}})
+    }, [status])
 
     return (
         <>
             <ScrollContainer>
-                <AutocompleteDropdown
-                    clearOnFocus={false}
-                    closeOnBlur={true}
-                    closeOnSubmit={false}
-                    initialValue={{ 'id': '1' }}
-                    // dataSet={dataClients}
-                    dataSet={[
-                        {
-                            id: "1",
-                            title: "Mr. Clyde Wunsch PhD Torpasdasd",
-                        },
-                        {
-                            id: "2",
-                            title: "Miles Goldner Hillasdasd",
-                        },
-                        {
-                            id: "3",
-                            title: "Carroll Beier MD Runte",
-                        },
-                        {
-                            id: "4",
-                            title: "fabab adbab",
-                        },
-                        {
-                            id: "5",
-                            title: "aDDFAG AGFGN",
-                        },
-                    ]}
-                />
                 <Input
-                    errorMessage={state.date.error}
+                    errorMessage={state.errors.clientId}
+                    open={open}
+                    value={client}
+                    items={state.dataClients}
+                    setOpen={setOpen}
+                    setValue={setClient}
+                    type='dropdown'
+                    placeholder={
+                        state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId))
+                        ? state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId)).label
+                        : 'Wybierz użytkownika'}
+                />
+                
+                <Input
+                    errorMessage={state.errors.date}
                     type={'datetime'}
                     label={'Data'}
                     mode={'date'}
                     onPress={showDatePicker}
-                    value={state.date.value}
-                    isVisible={isDatePickerVisible}
+                    value={state.date}
+                    isVisible={state.isDatePickerVisible}
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
                 />
 
                 <Input
-                    errorMessage={state.hour.error}
+                    errorMessage={state.errors.hour}
                     type={'datetime'}
                     label={'Godzina'}
                     mode={'time'}
                     onPress={showTimePicker}
-                    value={state.hour.value}
-                    isVisible={isTimePickerVisible}
+                    value={state.hour}
+                    isVisible={state.isTimePickerVisible}
                     onConfirm={handleTimeConfirm}
                     onCancel={hideTimePicker}
                 />
 
                 <Input
-                    errorMessage={state.status.error}
-                    label="Status"
-                    value={state.status.value}
-                    onChangeText={text => dispatchMeeting({type: 'setStatus', payload: {value: text}})}
+                    errorMessage={state.errors.status}
+                    open={openStatus}
+                    value={status}
+                    items={state.dataStatuses}
+                    setOpen={setOpenStatus}
+                    setValue={setStatus}
+                    type='dropdown'
+                    placeholder={
+                        state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status))
+                        ? state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status)).label
+                        : 'Wybierz status'}
                 />
 
                 <Input
                     label="Komentarz"
-                    value={state.comment.value}
-                    onChangeText={text => dispatchMeeting({type: 'setComment', payload: {value: text}})}
+                    value={state.comment}
+                    onChangeText={text => dispatchMeeting({type: 'setComment', payload: text})}
                 />
                 {mode === 'edit'
                     ? <Input
                         label="Komentarz po spotkaniu"
-                        value={state.commentAfter.value}
-                        onChangeText={text => dispatchMeeting({type: 'setCommentAfter', payload: {value: text}})}
+                        value={state.commentAfter}
+                        onChangeText={text => dispatchMeeting({type: 'setCommentAfter', payload: text})}
                     />
                     : <></>}
 
                 <Input
-                    errorMessage={state.price.error}
+                    errorMessage={state.errors.price}
                     keyboardType="numeric"
                     label="Cena"
-                    value={state.price.value
-                        ? state.price.value.toString()
-                        : state.price.value}
-                    onChangeText={text => dispatchMeeting({type: 'setPrice', payload: {value: text}})} />
+                    value={state.price
+                        ? state.price.toString()
+                        : state.price}
+                    onChangeText={text => dispatchMeeting({type: 'setPrice', payload: text})} 
+                />
             </ScrollContainer>
 
             <Button title={'Zapisz'} onPress={() => handleSave()}/>

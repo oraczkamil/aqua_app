@@ -6,3 +6,4 @@ export { default as Row } from './Row';
 export { default as ScrollContainer } from './ScrollContainer';
 export { default as Error } from './Error';
 export { default as ClientForm } from './ClientForm';
+export { default as HeaderRightButton } from './HeaderRightButton';

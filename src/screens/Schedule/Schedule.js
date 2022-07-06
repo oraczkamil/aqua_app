@@ -2,10 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {Calendar} from "react-native-calendars/src/index";
 import styles from "./Schedule.css";
 import {LocaleConfig} from 'react-native-calendars';
-import {useDispatch, useSelector} from "react-redux";
-import {LOAD_ALL_DAYS} from "../../store/constants/schedule";
+import {useSelector} from "react-redux";
 import {getAllDays} from "../../store/selectors/schedule";
-import {LOAD_ALL_CLIENTS} from "../../store/constants/clients";
 
 LocaleConfig.locales['pl'] = {
     monthNames: [
@@ -31,13 +29,7 @@ LocaleConfig.defaultLocale = 'pl';
 
 function Schedule({navigation}) {
     const days = useSelector(getAllDays);
-    const dispatch = useDispatch();
     const [dates, setDates] = useState({});
-
-    useEffect(() => {
-        dispatch({type: LOAD_ALL_DAYS});
-        dispatch({type: LOAD_ALL_CLIENTS});
-    }, [])
 
     useEffect(() => {
         let datesTemp = {};
