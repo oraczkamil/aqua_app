@@ -4,7 +4,9 @@ import {input} from "../../utils/theme/colors";
 import {Pressable, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import Error from "../Error";
-import DropDownPicker from 'react-native-dropdown-picker';
+import { DropDown } from './Input.css';
+import { input as colors } from '../../utils/theme/colors';
+import { input as typography } from '../../utils/theme/typography';
 
 function Input(props) {
     switch (props.type){
@@ -51,10 +53,10 @@ const getTextInput = (props) => {
                         flex: 1,
                         height: 60,
                         justifyContent:"center",
-                        borderWidth: 1,
-                        marginTop: -20
                     }, props.style
                 ]}
+                multiline
+                maxLength={255}
             />
         </>
     );
@@ -88,12 +90,18 @@ const getDropdownPicker = (props) => {
         <>
             <Error message={props.errorMessage} />
             <View>
-                <DropDownPicker
+                <DropDown
                     {...props}
                     searchable={true}
-                    style={{
-                        fontSize: 16,
+                    dropDownContainerStyle={{
+                        backgroundColor: colors.dropdownBackground,
+                        borderColor: colors.dropdownBorderColor,
                     }}
+                    searchPlaceholder="Nazwa użytkownika"
+                    searchContainerStyle={{
+                        borderBottomColor: colors.dropdownBorderColor,
+                    }}
+                    listMode="MODAL"
                 />
             </View>
         </>

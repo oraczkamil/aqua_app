@@ -1,10 +1,8 @@
 import * as constants from "../constants/security";
 
 const initialState = {
-    token: 'token',
-    user: {
-        id: 1,
-    },
+    token: '',
+    user: {},
     error: '',
 };
 

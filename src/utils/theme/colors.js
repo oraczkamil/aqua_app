@@ -36,6 +36,8 @@ export const input = {
     primary: colors.BLUE,
     background: commons.BACKGROUND,
     borderColor: colors.GREEN,
+    dropdownBackground: colors.GREY,
+    dropdownBorderColor: colors.BLUE,
 }
 
 export const error = {

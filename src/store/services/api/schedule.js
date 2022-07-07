@@ -3,8 +3,6 @@ import config from '../../../../config';
 
 const { url } = config;
 
-console.log(url);
-
 export default {
     getAllDays: async (userId) => {
         const response = await axios.get(`${url}/users/${userId}/meetingsdates`)

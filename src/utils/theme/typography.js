@@ -2,6 +2,7 @@ export const input = {
     height: '60px',
     borderRadius: '5px',
     marginBottom: '30px',
+    fontSize: '16px',
 }
 
 export const login = {

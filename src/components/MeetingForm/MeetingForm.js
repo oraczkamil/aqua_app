@@ -127,7 +127,7 @@ function MeetingForm({mode = 'add', meeting}) {
     return (
         <>
             <ScrollContainer>
-                {/* <Input
+                <Input
                     errorMessage={state.errors.clientId}
                     open={open}
                     value={client}
@@ -139,7 +139,7 @@ function MeetingForm({mode = 'add', meeting}) {
                         state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId))
                         ? state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId)).label
                         : 'Wybierz użytkownika'}
-                /> */}
+                />
                 
                 <Input
                     errorMessage={state.errors.date}
@@ -166,7 +166,7 @@ function MeetingForm({mode = 'add', meeting}) {
                     onCancel={hideTimePicker}
                 />
 
-                {/* <Input
+                <Input
                     errorMessage={state.errors.status}
                     open={openStatus}
                     value={status}
@@ -178,7 +178,7 @@ function MeetingForm({mode = 'add', meeting}) {
                         state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status))
                         ? state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status)).label
                         : 'Wybierz status'}
-                /> */}
+                />
 
                 <Input
                     label="Komentarz"

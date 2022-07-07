@@ -1,11 +1,12 @@
 export const initialState = {
-    id: {value: '', error: ''},
-    name: {value: '', error: ''},
-    surname: {value: '', error: ''},
-    city: {value: '', error: ''},
-    street: {value: '', error: ''},
-    zip_code: {value: '', error: ''},
-    phone: {value: '', error: ''},
+    id: '',
+    name: '',
+    surname: '',
+    city: '',
+    street: '',
+    zip_code: '',
+    phone: '',
+    errors: [],
 };
 
 export default function reducer(state, action) {
@@ -17,6 +18,7 @@ export default function reducer(state, action) {
         case 'setStreet': return {...state, street: action.payload};
         case 'setZipCode': return {...state, zip_code: action.payload};
         case 'setPhone': return {...state, phone: action.payload};
+        case 'setErrors': return {...state, errors: action.payload};
         default:
             throw new Error();
     }
