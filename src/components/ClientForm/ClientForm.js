@@ -22,8 +22,8 @@ function ClientForm({mode = 'add', client}) {
         if(!state.city.value) { dispatchMeeting({type: 'setCity', payload: {error: 'Miasto jest wymagane'}}); errors.push('city') }
         else errors.filter(error => error !== 'name');
 
-        if(!state.address.value) { dispatchMeeting({type: 'setAddress', payload: {error: 'Adres jest wymagany'}}); errors.push('address') }
-        else errors.filter(error => error !== 'address');
+        if(!state.street.value) { dispatchMeeting({type: 'setStreet', payload: {error: 'Adres jest wymagany'}}); errors.push('street') }
+        else errors.filter(error => error !== 'street');
 
         if(!state.zip_code.value) { dispatchMeeting({type: 'setZipCode', payload: {error: 'Kod pocztowy jest wymagany'}}); errors.push('zip_code') }
         else errors.filter(error => error !== 'zip_code');
@@ -41,7 +41,7 @@ function ClientForm({mode = 'add', client}) {
                 name: state.name.value,
                 surname: state.surname.value,
                 city: state.city.value,
-                address: state.address.value,
+                street: state.street.value,
                 zip_code: state.zip_code.value,
                 phone: state.phone.value,
             }
@@ -70,7 +70,7 @@ function ClientForm({mode = 'add', client}) {
                 dispatchMeeting({type: 'setName', payload: {value: client.name}});
                 dispatchMeeting({type: 'setSurname', payload: {value: client.surname}});
                 dispatchMeeting({type: 'setCity', payload: {value: client.city}});
-                dispatchMeeting({type: 'setAddress', payload: {value: client.address}});
+                dispatchMeeting({type: 'setStreet', payload: {value: client.street}});
                 dispatchMeeting({type: 'setZipCode', payload: {value: client.zip_code}});
                 dispatchMeeting({type: 'setPhone', payload: {value: client.phone}});
             };
@@ -85,6 +85,7 @@ function ClientForm({mode = 'add', client}) {
                     label="Imię"
                     value={state.name.value}
                     onChangeText={text => dispatchMeeting({type: 'setName', payload: {value: text}})}
+                    style={{marginTop: 0}}
                 />
 
                 <Input
@@ -102,10 +103,10 @@ function ClientForm({mode = 'add', client}) {
                 />
 
                 <Input
-                    errorMessage={state.address.error}
+                    errorMessage={state.street.error}
                     label="Adres"
-                    value={state.address.value}
-                    onChangeText={text => dispatchMeeting({type: 'setAddress', payload: {value: text}})}
+                    value={state.street.value}
+                    onChangeText={text => dispatchMeeting({type: 'setStreet', payload: {value: text}})}
                 />
 
                 <Input

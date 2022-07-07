@@ -1,15 +1,17 @@
 import React, {useState} from 'react';
-import {Button, View} from "react-native";
-import {Container, Input} from "../../components";
-import {useDispatch} from "react-redux";
+import {Container, Input, Error} from "../../components";
+import {useDispatch, useSelector} from "react-redux";
 import {SIGN_IN} from "../../store/constants/security";
 import {TextInput} from "react-native-paper";
+import { Button, Wrapper, Text } from './Login.css';
+import {getError} from '../../store/selectors/security';
 
 function Login() {
     const dispatch = useDispatch();
 
-    const [login, setLogin] = useState('kamil.oracz@eurocall.pl');
-    const [password, setPassword] = useState('password');
+    const error = useSelector(getError);
+    const [login, setLogin] = useState('');
+    const [password, setPassword] = useState('');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const signIn = () => {
@@ -18,14 +20,15 @@ function Login() {
 
     return (
         <Container>
-            <Input style={{width: '80%'}} label="Email" value={login} onChangeText={text => setLogin(text)} />
-            <Input style={{width: '80%'}} label="Hasło" value={password} onChangeText={text => setPassword(text)} secureTextEntry={passwordVisible ? false : true}
-                   right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />}
-            />
+            <Wrapper>
+                <Error message={error} />
+                <Input type='login' style={{width: '80%'}} label="Email" value={login} onChangeText={text => setLogin(text)} />
+                <Input type='login' style={{width: '80%'}} label="Hasło" value={password} onChangeText={text => setPassword(text)} secureTextEntry={passwordVisible ? false : true}
+                    right={<TextInput.Icon name={passwordVisible ? "eye" : "eye-off"} onPress={() => setPasswordVisible(!passwordVisible)} />}
+                />
 
-            <View style={{marginTop: 20}}>
-                <Button onPress={() => signIn()} title={'Zaloguj się'} />
-            </View>
+                <Button onPress={() => signIn()}><Text>Zaloguj się</Text></Button>
+            </Wrapper>
         </Container>
     );
 }

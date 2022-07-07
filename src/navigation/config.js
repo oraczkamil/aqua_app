@@ -2,54 +2,38 @@ import {FontAwesomeIcon} from "@fortawesome/react-native-fontawesome";
 import {faCalendarDays, faPlusCircle} from "@fortawesome/free-solid-svg-icons";
 import {faUsers} from "@fortawesome/free-solid-svg-icons/faUsers";
 import { HeaderRightButton } from "../components";
+import {navigation as colors} from '../utils/theme/colors';
+import {navigation as typography} from '../utils/theme/typography';
 
 const color = (focused) => {
-    return focused ? 'rgb(0, 122, 255)' : 'rgb(142, 142, 143)';
+    return focused ? colors.focusedColor : colors.color;
 }
 
+const dontDisplay = title => ({
+    title: title,
+    tabBarButton: () => null,
+});
+
+const display = (title, icon, headerIcon, routeName) => ({
+    title: title,
+        tabBarIcon: ({focused}) => (
+            <FontAwesomeIcon icon={icon} color={color(focused)} size={typography.iconSize} />
+        ),
+        tabBarStyles: {color: colors.color},
+        headerRight: () => (<HeaderRightButton icon={headerIcon} routeName={routeName} color={colors.focusedColor} size={typography.iconSize} />),
+        tabBarLabelStyle: {display: 'none'},
+});
+
 const config = {
-    schedule: {
-        title: 'Grafik',
-        tabBarIcon: ({focused}) => (
-            <FontAwesomeIcon icon={faCalendarDays} color={color(focused)}/>
-        ),
-        headerRight: () => (<HeaderRightButton icon={faPlusCircle} routeName={'addMeeting'} />)
-    },
-    addMeeting: {
-        title: 'Dodaj spotkanie',
-        tabBarButton: () => null,
-    },
-    editMeeting: {
-        title: 'Edytuj spotkanie',
-        tabBarButton: () => null,
-    },
-    day: {
-        title: 'Dzień',
-        tabBarButton: () => null,
-    },
-    meeting: {
-        title: 'Spotkanie',
-        tabBarButton: () => null,
-    },
-    client: {
-        title: 'Klient',
-        tabBarButton: () => null,
-    },
-    clients: {
-        title: 'Klienci',
-        tabBarIcon: ({focused}) => (
-            <FontAwesomeIcon icon={faUsers} color={color(focused)}/>
-        ),
-        headerRight: () => (<HeaderRightButton icon={faPlusCircle} routeName={'addClient'} />)
-    },
-    addClient: {
-        title: 'Dodaj klienta',
-        tabBarButton: () => null,
-    },
-    editClient: {
-        title: 'Edytuj klienta',
-        tabBarButton: () => null,
-    },
+    schedule: display('Grafik', faCalendarDays, faPlusCircle, 'addMeeting'),
+    clients: display('Klienci', faUsers, faPlusCircle, 'addClient'),
+    addMeeting: dontDisplay('Dodaj spotkanie'),
+    editMeeting: dontDisplay('Edytuj spotkanie'),
+    day: dontDisplay('Dzień'),
+    meeting: dontDisplay('Spotkanie'),
+    client: dontDisplay('Klient'),
+    addClient: dontDisplay('Dodaj klienta'),
+    editClient: dontDisplay('Edytuj klienta'),
 }
 
 export default config;

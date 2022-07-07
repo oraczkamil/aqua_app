@@ -4,13 +4,17 @@ const initialState = {
     token: 'token',
     user: {
         id: 1,
-        name: 'Kamil'
     },
+    error: '',
 };
 
 const securityReducer = (state = initialState, action) => {
     switch(action.type) {
-        case constants.SIGN_IN: return state;
+        case constants.SIGN_IN: 
+            return {
+                ...state,
+                error: '',
+            };
         case constants.SIGN_OUT: return state;
         case constants.SET_TOKEN:
             return {
@@ -20,8 +24,13 @@ const securityReducer = (state = initialState, action) => {
         case constants.SET_USER:
             return {
                 ...state,
-                user: action.payload
+                user: action.payload,
             };
+        case constants.SIGN_IN_FAILURE:
+            return {
+                ...state,
+                error: action.payload
+            }
         default: return state;
     }
 }

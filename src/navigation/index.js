@@ -5,7 +5,8 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import config from "./config";
 import {useSelector} from "react-redux";
 import {getToken} from "../store/selectors/security";
-import {REACT_APP_API_TOKEN} from '@env';
+import {navigation as colors} from '../utils/theme/colors';
+import {navigation as typography} from '../utils/theme/typography';
 
 const BottomTab = createBottomTabNavigator();
 
@@ -16,7 +17,15 @@ function Navigation() {
 
     return (
         <NavigationContainer>
-            <BottomTab.Navigator initialRouteName="schedule">
+            <BottomTab.Navigator 
+                initialRouteName="schedule"
+                screenOptions={{
+                    headerStyle: { backgroundColor: colors.background },
+                    headerTintColor: colors.color,
+                    headerTitleStyle: { fontWeight: typography.fontWeight },
+                    tabBarStyle: { backgroundColor: colors.background },
+                }}
+            >
                 <BottomTab.Screen name="schedule" component={screens.Schedule} options={config.schedule}/>
                 <BottomTab.Screen name="day" component={screens.Day} options={config.day} />
                 <BottomTab.Screen name="meeting" component={screens.Meeting} options={config.meeting} />

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Calendar} from "react-native-calendars/src/index";
-import styles from "./Schedule.css";
+import {CustomCalendar} from "./Schedule.css";
 import {LocaleConfig} from 'react-native-calendars';
 import {useSelector} from "react-redux";
 import {getAllDays} from "../../store/selectors/schedule";
+import {schedule as colors} from '../../utils/theme/colors';
+import {schedule as typography} from '../../utils/theme/typography';
 
 LocaleConfig.locales['pl'] = {
     monthNames: [
@@ -43,13 +44,20 @@ function Schedule({navigation}) {
 
     return (
         <>
-            <Calendar
-                style={styles.calendar}
+            <CustomCalendar
                 markedDates={dates}
                 theme={{
-                    arrowColor: '#000',
-                    arrowWidth: 30,
-                    arrowHeight: 30
+                    arrowColor: colors.arrowColor,
+                    arrowWidth: typography.arrow,
+                    arrowHeight: typography.arrow,
+                    calendarBackground: colors.background,
+                    textSectionTitleColor: colors.textSectionTitleColor,
+                    todayTextColor: colors.todayTextColor,
+                    dotColor: colors.dotColor,
+                    todayTextColor: colors.todayTextColor,
+                    textDayFontWeight: typography.fontWeight,
+                    textMonthFontWeight: typography.fontWeight,
+                    textDayHeaderFontWeight: typography.fontWeight,
                 }}
                 onDayPress={day => {
                     navigation.navigate('day', {date: day.dateString, title: day.dateString});

@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextInput} from "react-native-paper";
+import {TextInput} from './Input.css';
 import {input} from "../../utils/theme/colors";
 import {Pressable, View} from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -11,8 +11,26 @@ function Input(props) {
         case 'text': return getTextInput(props);
         case 'datetime': return getDateTimeInput(props);
         case 'dropdown': return getDropdownPicker(props);
+        case 'login': return getLoginInput(props);
         default: return getTextInput(props);
     }
+}
+
+const getLoginInput = (props) => {
+    return (
+        <>
+            <Error message={props.errorMessage} />
+            <TextInput
+                {...props}
+                theme={{
+                    colors: {
+                        primary: input.primary,
+                    },
+                }}
+                underlineColor='transparent'
+            />
+        </>
+    );
 }
 
 const getTextInput = (props) => {
@@ -24,12 +42,19 @@ const getTextInput = (props) => {
                 theme={{
                     colors: {
                         primary: input.primary,
-                    },
+                        placeholder: input.borderColor,
+                    }
                 }}
-                style={{
-                    backgroundColor: input.background,
-                    ...props.style
-                }}
+                underlineColor={input.borderColor}
+                style={[
+                    {
+                        flex: 1,
+                        height: 60,
+                        justifyContent:"center",
+                        borderWidth: 1,
+                        marginTop: -20
+                    }, props.style
+                ]}
             />
         </>
     );
@@ -39,7 +64,13 @@ const getDateTimeInput = (props) => {
     return (
         <>
             <Error message={props.errorMessage} />
-            <Pressable onPress={props.onPress}>
+            <Pressable onPress={props.onPress}
+                style={[
+                    {
+                        
+                    },props.style
+                ]}
+            >
                 <Input label={props.label} value={props.value} editable={false} />
             </Pressable>
             <DateTimePickerModal
@@ -61,7 +92,7 @@ const getDropdownPicker = (props) => {
                     {...props}
                     searchable={true}
                     style={{
-                        fontSize: 16
+                        fontSize: 16,
                     }}
                 />
             </View>

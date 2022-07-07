@@ -14,7 +14,7 @@ export default {
             name: client.name,
             surname: client.surname,
             city: client.city,
-            address: client.address,
+            street: client.street,
             zip_code: client.zip_code,
             phone: client.phone,
         })
@@ -28,7 +28,7 @@ export default {
             name: client.name,
             surname: client.surname,
             city: client.city,
-            address: client.address,
+            street: client.street,
             zip_code: client.zip_code,
             phone: client.phone,
         })

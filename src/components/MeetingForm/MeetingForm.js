@@ -54,10 +54,10 @@ function MeetingForm({mode = 'add', meeting}) {
 
     const handleSave = () => {
         const data = {
-            clientId: state.clientId.value,
+            clientId: state.clientId,
             date: state.date,
             hour: state.hour,
-            status: state.status.value,
+            status: state.status,
             price: state.price,
             comment: state.comment,
             commentAfter: state.commentAfter
@@ -70,7 +70,7 @@ function MeetingForm({mode = 'add', meeting}) {
                 ? dispatch({type: EDIT_MEETING, payload: data})
                 : dispatch({type: ADD_MEETING, payload: data})
 
-            navigation.navigate('day', {date: state.date.value, title: state.date.value});
+            navigation.navigate('day', {date: state.date, title: state.date});
         }else{
             dispatchMeeting({type: 'setErrors', payload: validation.errors});
         }
@@ -78,8 +78,8 @@ function MeetingForm({mode = 'add', meeting}) {
     }
 
     const handleDelete = () => {
-        dispatch({type: DELETE_MEETING, payload: {id: state.id.value, date: state.date.value}});
-        navigation.navigate('day', {date: state.date.value, title: state.date.value});
+        dispatch({type: DELETE_MEETING, payload: {id: state.id, date: state.date}});
+        navigation.navigate('day', {date: state.date, title: state.date});
     }
 
     useFocusEffect(
@@ -93,7 +93,7 @@ function MeetingForm({mode = 'add', meeting}) {
                 dispatchMeeting({type: 'setClientId', payload: meeting.client_id});
                 dispatchMeeting({type: 'setDate', payload: meeting.date});
                 dispatchMeeting({type: 'setHour', payload: meeting.hour});
-                dispatchMeeting({type: 'setStatus', payload: meeting.status.status});
+                dispatchMeeting({type: 'setStatus', payload: meeting.status.id});
                 dispatchMeeting({type: 'setComment', payload: meeting.comment});
                 dispatchMeeting({type: 'setCommentAfter', payload: meeting.comment_after});
                 dispatchMeeting({type: 'setPrice', payload: meeting.price});
@@ -110,17 +110,24 @@ function MeetingForm({mode = 'add', meeting}) {
     }, [statuses])
 
     useEffect(() => {
-        dispatchMeeting({type: 'setClientId', payload: {value: client}})
-    }, [client])
+        if(meeting){
+            dispatchMeeting({type: 'setClientId', payload: meeting.client.id});
+            dispatchMeeting({type: 'setStatus', payload: meeting.status.id});
+        }
+    }, [meeting])
 
     useEffect(() => {
-        dispatchMeeting({type: 'setStatus', payload: {value: status}})
-    }, [status])
+        if(client) dispatchMeeting({type: 'setClientId', payload: client});
+    }, [client]);
+
+    useEffect(() => {
+        if(status) dispatchMeeting({type: 'setStatus', payload: status});
+    }, [status]);
 
     return (
         <>
             <ScrollContainer>
-                <Input
+                {/* <Input
                     errorMessage={state.errors.clientId}
                     open={open}
                     value={client}
@@ -132,7 +139,7 @@ function MeetingForm({mode = 'add', meeting}) {
                         state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId))
                         ? state.dataClients.find(item => parseInt(item.value) === parseInt(state.clientId)).label
                         : 'Wybierz użytkownika'}
-                />
+                /> */}
                 
                 <Input
                     errorMessage={state.errors.date}
@@ -144,6 +151,7 @@ function MeetingForm({mode = 'add', meeting}) {
                     isVisible={state.isDatePickerVisible}
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
+                    style={{marginTop: 20}}
                 />
 
                 <Input
@@ -158,7 +166,7 @@ function MeetingForm({mode = 'add', meeting}) {
                     onCancel={hideTimePicker}
                 />
 
-                <Input
+                {/* <Input
                     errorMessage={state.errors.status}
                     open={openStatus}
                     value={status}
@@ -170,7 +178,7 @@ function MeetingForm({mode = 'add', meeting}) {
                         state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status))
                         ? state.dataStatuses.find(item => parseInt(item.value) === parseInt(state.status)).label
                         : 'Wybierz status'}
-                />
+                /> */}
 
                 <Input
                     label="Komentarz"

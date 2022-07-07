@@ -1,7 +1,6 @@
 import { SIGN_IN } from "../constants/security";
 import * as uiActions from '../actions/ui';
-import {setToken, setUser} from "../actions/security";
-import {REACT_APP_API_TOKEN} from '@env';
+import {setToken, setUser, signInFailure} from "../actions/security";
 
 const signInFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
     next(action);
@@ -16,7 +15,7 @@ const signInFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
 
             dispatch(setToken('token'));
         } catch (error) {
-
+            dispatch(signInFailure('Nieprawidłowe dane logowania'));
         }
         dispatch(uiActions.disableLoading());
     }

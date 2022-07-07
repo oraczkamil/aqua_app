@@ -1,9 +1,16 @@
 import styled from 'styled-components/native';
-import { button } from '../../utils/theme/colors';
 import { login as colors } from '../../utils/theme/colors';
 import { login as typography } from '../../utils/theme/typography';
 
-export const CustomButton = styled.Pressable`
+export const Wrapper = styled.View`
+    background: ${colors.background};
+    width: 100%;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+`;
+
+export const Button = styled.Pressable`
     background: ${colors.buttonBackground};
     height: ${typography.buttonHeihgt};
     justify-content: center;
@@ -12,11 +19,11 @@ export const CustomButton = styled.Pressable`
     border-top-left-radius: ${typography.buttonBorderRadius};
     border-bottom-right-radius: ${typography.buttonBorderRadius};
     border-bottom-left-radius: ${typography.buttonBorderRadius};
-    width: 100%;
-    margin-bottom: 10px;
-`;
+    width: ${typography.buttonWidth};
+`
 
 export const Text = styled.Text`
-color: ${colors.buttonColor};
-font-size: ${typography.fontSize};
-`;
+    color: ${colors.buttonColor};
+    font-size: ${typography.fontSize};
+
+`

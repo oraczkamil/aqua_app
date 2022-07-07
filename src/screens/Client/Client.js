@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import {Button, Container, Row, ScrollContainer} from "../../components";
+import {Button, Container, DatatableRow, ScrollContainer} from "../../components";
 import {useFocusEffect} from "@react-navigation/native";
 
 function Client({route, navigation}) {
@@ -16,10 +16,10 @@ function Client({route, navigation}) {
     return (
         <Container>
             <ScrollContainer>
-                <Row label={'Miasto'} value={client.city}/>
-                <Row label={'Adres'} value={client.address}/>
-                <Row label={'Kod pocztowy'} value={client.zip_code}/>
-                <Row label={'Numer'} value={client.phone}/>
+                <DatatableRow label={'Miasto'} value={client.city}/>
+                <DatatableRow label={'Ulica'} value={client.street}/>
+                <DatatableRow label={'Kod pocztowy'} value={client.zip_code}/>
+                <DatatableRow label={'Numer'} value={client.phone}/>
             </ScrollContainer>
 
             <Button title={'Edytuj'} onPress={() => navigation.navigate('editClient', {

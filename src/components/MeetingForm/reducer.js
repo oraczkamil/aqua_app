@@ -25,7 +25,7 @@ export default function reducer(state, action) {
         case 'setComment': return {...state, comment: action.payload};
         case 'setCommentAfter': return {...state, commentAfter: action.payload};
         case 'setPrice': return {...state, price: action.payload};
-        case 'setDatePickerVisibility': return {...state, isDatePickerVisible: action.payload};
+        case 'setDatePickerVisibility': return {...state, isDatePickerVisible: !state.isDatePickerVisible};
         case 'setTimePickerVisibility': return {...state, isTimePickerVisible: !state.isTimePickerVisible};
         case 'setDataClients': return {...state, dataClients: action.payload};
         case 'setClient': return {...state, client: action.payload};
