@@ -18,7 +18,7 @@ function Navigation() {
     return (
         <NavigationContainer>
             <BottomTab.Navigator 
-                initialRouteName="addMeeting"
+                initialRouteName="schedule"
                 screenOptions={{
                     headerStyle: { backgroundColor: colors.background },
                     headerTintColor: colors.color,

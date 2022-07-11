@@ -100,7 +100,9 @@ const deleteMeetingFlow = ({ api }) => ({ dispatch, getState }) => next => async
 
             const userId = getState().security.user.id;
 
-            const meetings = await api.schedule.deleteMeeting(action.payload, userId);
+            action.payload['userId'] = userId;
+
+            const meetings = await api.schedule.deleteMeeting(action.payload);
 
             dispatch(setOneDay(meetings))
 

@@ -6,7 +6,7 @@ export const initialState = {
     status: null,
     comment: '',
     commentAfter: '',
-    price: 200,
+    price: '',
     isDatePickerVisible: false,
     isTimePickerVisible: false,
     dataClients: [],

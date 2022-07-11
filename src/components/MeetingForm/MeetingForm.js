@@ -8,7 +8,7 @@ import {getAllClients} from "../../store/selectors/clients";
 import {getAllStatuses} from "../../store/selectors/statuses";
 import useValidation from '../../utils/hooks/useValidation';
 import validationConfig from './validationConfig';
-import {mapDataToSelect} from '../../utils/helpers';
+import {mapDataToSelect, dateToLocalISO} from '../../utils/helpers';
 
 function MeetingForm({mode = 'add', meeting}) {
     const navigation = useNavigation();
@@ -47,20 +47,23 @@ function MeetingForm({mode = 'add', meeting}) {
         hideDatePicker();
     };
 
+    
+
     const handleTimeConfirm = (time) => {
-        dispatchMeeting({type: 'setHour', payload: time.toISOString().slice(11,19)});
+        dispatchMeeting({type: 'setHour', payload: dateToLocalISO(time).slice(11,19)});
         hideTimePicker();
     };
 
     const handleSave = () => {
         const data = {
+            id: state.id,
             clientId: state.clientId,
             date: state.date,
             hour: state.hour,
             status: state.status,
             price: state.price,
             comment: state.comment,
-            commentAfter: state.commentAfter
+            comment_after: state.commentAfter
         }
 
         validation.validate(rules, messages, data);

@@ -1,10 +1,12 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {CustomCalendar} from "./Schedule.css";
 import {LocaleConfig} from 'react-native-calendars';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {getAllDays} from "../../store/selectors/schedule";
 import {schedule as colors} from '../../utils/theme/colors';
 import {schedule as typography} from '../../utils/theme/typography';
+import { useFocusEffect } from '@react-navigation/native';
+import { LOAD_ALL_DAYS } from '../../store/constants/schedule';
 
 LocaleConfig.locales['pl'] = {
     monthNames: [
@@ -30,6 +32,7 @@ LocaleConfig.defaultLocale = 'pl';
 
 function Schedule({navigation}) {
     const days = useSelector(getAllDays);
+    const dispatch = useDispatch();
     const [dates, setDates] = useState({});
 
     useEffect(() => {
@@ -41,6 +44,12 @@ function Schedule({navigation}) {
 
         setDates(datesTemp);
     }, [days])
+
+    useFocusEffect(
+        useCallback(() => {
+            dispatch({type: LOAD_ALL_DAYS});
+        }, [])
+    );
 
     return (
         <>

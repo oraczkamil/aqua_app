@@ -42,7 +42,7 @@ export default {
             hour: meeting.hour,
             status_id: meeting.status,
             comment: meeting.comment,
-            comment_after: meeting.commentAfter,
+            comment_after: meeting.comment_after,
             price: meeting.price
         })
             .then(response => (response))
