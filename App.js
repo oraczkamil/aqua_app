@@ -1,10 +1,11 @@
 import Navigation from "./src/navigation";
-import {Provider, useDispatch} from "react-redux";
+import {Provider, useDispatch, useSelector} from "react-redux";
 import configureStore from './store/configureStore';
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useEffect } from "react";
 import { LOAD_ALL_CLIENTS } from "./src/store/constants/clients";
 import { LOAD_ALL_STATUSES } from "./src/store/constants/statuses";
+import {getToken} from "./src/store/selectors/security";
 
 const store = configureStore()
 
@@ -20,11 +21,14 @@ export default function App() {
 
 const Preload = ({children}) => {
     const dispatch = useDispatch();
+    const token = useSelector(getToken);
 
     useEffect(() => {
-        dispatch({type: LOAD_ALL_CLIENTS});
-        dispatch({type: LOAD_ALL_STATUSES});
-    }, []);
+        if(token){
+            dispatch({type: LOAD_ALL_CLIENTS});
+            dispatch({type: LOAD_ALL_STATUSES});
+        }
+    }, [token]);
 
     return (
         <SafeAreaProvider>

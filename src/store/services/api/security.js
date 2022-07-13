@@ -5,7 +5,7 @@ const { url } = config;
 
 export default {
     signIn: async ({login, password}) => {
-        const response = await axios.post(`${url}/users/login`,
+        const response = await axios.post(`${url}/login`,
             {
                 email: login,
                 password: password,

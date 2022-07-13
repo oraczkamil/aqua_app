@@ -1,6 +1,8 @@
 import {ADD_MEETING, DELETE_MEETING, EDIT_MEETING, LOAD_ALL_DAYS, LOAD_ONE_DAY} from "../constants/schedule";
 import * as uiActions from '../actions/ui';
 import {setAllDays, setOneDay} from "../actions/schedule";
+import {signOut} from "../actions/security";
+import {useNavigation} from "@react-navigation/native";
 
 const loadAllDaysFlow = ({ api }) => ({ dispatch, getState }) => next => async (action) => {
     next(action);
@@ -17,7 +19,7 @@ const loadAllDaysFlow = ({ api }) => ({ dispatch, getState }) => next => async (
 
             dispatch(uiActions.disableLoading());
         } catch (error) {
-            console.log(error);
+            dispatch(signOut());
         }
     }
 }

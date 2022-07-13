@@ -11,9 +11,9 @@ const signInFlow = ({ api }) => ({ dispatch }) => next => async (action) => {
 
             const user = await api.security.signIn(action.payload);
 
-            dispatch(setUser(user));
+            dispatch(setUser(user.user));
 
-            dispatch(setToken('token'));
+            dispatch(setToken(user.token));
         } catch (error) {
             dispatch(signInFailure('Nieprawidłowe dane logowania'));
         }

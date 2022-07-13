@@ -13,7 +13,12 @@ const securityReducer = (state = initialState, action) => {
                 ...state,
                 error: '',
             };
-        case constants.SIGN_OUT: return state;
+        case constants.SIGN_OUT:
+            return {
+                error: '',
+                user: {},
+                token: '',
+            };
         case constants.SET_TOKEN:
             return {
                 ...state,
