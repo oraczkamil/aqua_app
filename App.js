@@ -7,7 +7,7 @@ import { LOAD_ALL_CLIENTS } from "./src/store/constants/clients";
 import { LOAD_ALL_STATUSES } from "./src/store/constants/statuses";
 import {getToken} from "./src/store/selectors/security";
 
-const store = configureStore()
+export const store = configureStore()
 
 export default function App() {
     return (

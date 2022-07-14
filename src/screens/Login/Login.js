@@ -1,22 +1,27 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Container, Input, Error} from "../../components";
 import {useDispatch, useSelector} from "react-redux";
 import {SIGN_IN} from "../../store/constants/security";
 import {TextInput} from "react-native-paper";
 import { Button, Wrapper, Text } from './Login.css';
 import {getError} from '../../store/selectors/security';
+import navigationService from "../../utils/helpers/NavigationService";
 
-function Login() {
+function Login({navigation}) {
     const dispatch = useDispatch();
 
     const error = useSelector(getError);
-    const [login, setLogin] = useState('');
-    const [password, setPassword] = useState('');
+    const [login, setLogin] = useState('kamil.oracz@eurocall.pl');
+    const [password, setPassword] = useState('password');
     const [passwordVisible, setPasswordVisible] = useState(false);
 
     const signIn = () => {
         dispatch({type: SIGN_IN, payload: {login, password}});
     }
+
+    useEffect(() => {
+        navigationService.navigation = navigation;
+    }, [navigation])
 
     return (
         <Container>

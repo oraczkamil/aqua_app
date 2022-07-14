@@ -4,15 +4,22 @@ import config from '../../../../config';
 const { url } = config;
 
 export default {
-    getAllDays: async (userId) => {
-        const response = await axios.get(`${url}/users/${userId}/meetingsdates`)
-            .then(response => (response))
-            .catch(error => console.log(error));
+    getAllDays: async (userId, token) => {
+        const response = await axios.get(`${url}/users/${userId}/meetingsdates`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
+            .then(response => (response));
 
         return response.data;
     },
-    getOneDay: async (date, userId) => {
-        const response = await axios.get(`${url}/users/${userId}/meetings/${date}`)
+    getOneDay: async (date, userId, token) => {
+        const response = await axios.get(`${url}/users/${userId}/meetings/${date}`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
             .then(response => (response))
             .catch(error => console.log(error));
 
@@ -34,7 +41,7 @@ export default {
 
         return response.data;
     },
-    editMeeting: async (meeting, userId) => {
+    editMeeting: async (meeting, userId, token) => {
         const response = await axios.patch(`${url}/meetings/${meeting.id}`, {
             user_id: userId,
             client_id: meeting.clientId,
@@ -44,14 +51,22 @@ export default {
             comment: meeting.comment,
             comment_after: meeting.comment_after,
             price: meeting.price
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
         })
             .then(response => (response))
             .catch(error => console.log(error));
 
         return response.data;
     },
-    deleteMeeting: async ({userId, id, date}) => {
-        const response = await axios.delete(`${url}/users/${userId}/date/${date}/meeting/${id}`)
+    deleteMeeting: async ({userId, id, date}, token) => {
+        const response = await axios.delete(`${url}/users/${userId}/date/${date}/meeting/${id}`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
             .then(response => (response))
             .catch(error => console.log(error));
 

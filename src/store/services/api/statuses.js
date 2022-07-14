@@ -4,8 +4,12 @@ import config from '../../../../config';
 const { url } = config;
 
 export default {
-    getAllStatuses: async () => {
-        const response = await axios.get(`${url}/statuses`)
+    getAllStatuses: async (token) => {
+        const response = await axios.get(`${url}/statuses`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
             .then(response => (response))
             .catch(error => console.log(error));
 

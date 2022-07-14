@@ -7,6 +7,7 @@ import {schedule as colors} from '../../utils/theme/colors';
 import {schedule as typography} from '../../utils/theme/typography';
 import { useFocusEffect } from '@react-navigation/native';
 import { LOAD_ALL_DAYS } from '../../store/constants/schedule';
+import navigationService from "../../utils/helpers/NavigationService";
 
 LocaleConfig.locales['pl'] = {
     monthNames: [
@@ -63,7 +64,6 @@ function Schedule({navigation}) {
                     textSectionTitleColor: colors.textSectionTitleColor,
                     todayTextColor: colors.todayTextColor,
                     dotColor: colors.dotColor,
-                    todayTextColor: colors.todayTextColor,
                     textDayFontWeight: typography.fontWeight,
                     textMonthFontWeight: typography.fontWeight,
                     textDayHeaderFontWeight: typography.fontWeight,

@@ -7,13 +7,23 @@ import {useSelector} from "react-redux";
 import {getToken} from "../store/selectors/security";
 import {navigation as colors} from '../utils/theme/colors';
 import {navigation as typography} from '../utils/theme/typography';
+import {createNativeStackNavigator} from "@react-navigation/native-stack";
 
 const BottomTab = createBottomTabNavigator();
+const UnauthorizedTab = createNativeStackNavigator();
 
 function Navigation() {
     let token = useSelector(getToken);
 
-    if(!token) return <screens.Login />
+    if(!token){
+        return (
+            <NavigationContainer>
+                <UnauthorizedTab.Navigator initialRouteName="login">
+                    <UnauthorizedTab.Screen name="login" component={screens.Login} options={{headerShown: false}}/>
+                </UnauthorizedTab.Navigator>
+            </NavigationContainer>
+        );
+    }
 
     return (
         <NavigationContainer>

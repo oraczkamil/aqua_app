@@ -4,12 +4,16 @@ import config from '../../../../config';
 const { url } = config;
 
 export default {
-    getAllClients: async () => {
-        const response = await axios.get(`${url}/clients`);
+    getAllClients: async (token) => {
+        const response = await axios.get(`${url}/clients`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        });
 
         return response.data;
     },
-    addClient: async (client) => {
+    addClient: async (client, token) => {
         const response = await axios.post(`${url}/clients`, {
             name: client.name,
             surname: client.surname,
@@ -17,13 +21,17 @@ export default {
             street: client.street,
             zip_code: client.zip_code,
             phone: client.phone,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
         })
             .then(response => (response))
             .catch(error => console.log(error));
 
         return response.data;
     },
-    editClient: async (client) => {
+    editClient: async (client, token) => {
         const response = await axios.patch(`${url}/clients/${client.id}`, {
             name: client.name,
             surname: client.surname,
@@ -31,14 +39,22 @@ export default {
             street: client.street,
             zip_code: client.zip_code,
             phone: client.phone,
+        }, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
         })
             .then(response => (response))
             .catch(error => console.log(error));
 
         return response.data;
     },
-    deleteClient: async (id) => {
-        const response = await axios.delete(`${url}/clients/${id}`)
+    deleteClient: async (id, token) => {
+        const response = await axios.delete(`${url}/clients/${id}`, {
+            headers: {
+                Authorization: 'Bearer ' + token
+            }
+        })
             .then(response => (response))
             .catch(error => console.log(error));
 
